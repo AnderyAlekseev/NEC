@@ -1,0 +1,18 @@
+# ninja log v5
+9	121	7931119715818288	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Obj/Application/EWARM/startup_stm32f030x6.o	9070f1949dc8336f
+87	606	7931119720499836	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Obj/Drivers/STM32F0xx_HAL_Driver/stm32f0xx_ll_rcc.o	74c944951e9729d9
+1	653	7931119720739194	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Obj/Application/User/Core/gpio.o	88cfc89d09c2f529
+123	728	7931119721776465	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Obj/Drivers/CMSIS/system_stm32f0xx.o	e23865d10f202c4c
+660	787	7931119722404808	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Obj/Drivers/STM32F0xx_HAL_Driver/stm32f0xx_ll_dma.o	3ab6d0f5410c0258
+108	801	7931119722305067	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Obj/Application/User/Core/stm32f0xx_it.o	2af320df1f46b24f
+92	819	7931119722364902	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Obj/Application/User/Core/tim.o	c2e0a63e8a48324f
+614	844	7931119722913459	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Obj/Application/User/Core/usart.o	e58bf4d9327dc6c5
+99	872	7931119722534439	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Obj/Application/User/Core/main.o	f4893de07b0b065
+793	924	7931119723751220	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Obj/Drivers/STM32F0xx_HAL_Driver/stm32f0xx_ll_pwr.o	f8d8a1681cbafeba
+735	942	7931119723930743	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Obj/Drivers/STM32F0xx_HAL_Driver/stm32f0xx_ll_gpio.o	1b6fc3acb846d0cb
+806	959	7931119724090318	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Obj/Drivers/STM32F0xx_HAL_Driver/stm32f0xx_ll_exti.o	1be374d8b5b9e684
+825	991	7931119724469331	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Obj/Drivers/STM32F0xx_HAL_Driver/stm32f0xx_ll_usart.o	3a6f62bd45702dd8
+850	1008	7931119724608974	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Obj/Drivers/STM32F0xx_HAL_Driver/stm32f0xx_ll_utils.o	7fe0024ab28c2add
+877	1081	7931119725347008	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Obj/Drivers/STM32F0xx_HAL_Driver/stm32f0xx_ll_tim.o	b43522a1f84f7ea1
+1087	1197	7931119726546461	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Exe/NEC.out	4b3d732bdaf2869
+1206	1220	7931119726825726	C:/Users/a.alekseev/Documents/NEC/EWARM/DEBUG/Exe/NEC.hex	4923d18359ba5028

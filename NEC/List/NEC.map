@@ -1,0 +1,305 @@
+###############################################################################
+#
+# IAR ELF Linker V9.20.1.318/W64 for ARM                  18/Feb/2026  12:49:12
+# Copyright 2007-2021 IAR Systems AB.
+#
+#    Output file  =  C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Exe\NEC.out
+#    Map file     =  C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\List\NEC.map
+#    Command line =
+#        -f C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Exe\NEC.out.rsp
+#        (C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Application\User\Core\gpio.o
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Application\User\Core\main.o
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Application\EWARM\startup_stm32f030x6.o
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Application\User\Core\stm32f0xx_it.o
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Drivers\STM32F0xx_HAL_Driver\stm32f0xx_ll_dma.o
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Drivers\STM32F0xx_HAL_Driver\stm32f0xx_ll_exti.o
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Drivers\STM32F0xx_HAL_Driver\stm32f0xx_ll_gpio.o
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Drivers\STM32F0xx_HAL_Driver\stm32f0xx_ll_pwr.o
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Drivers\STM32F0xx_HAL_Driver\stm32f0xx_ll_rcc.o
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Drivers\STM32F0xx_HAL_Driver\stm32f0xx_ll_tim.o
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Drivers\STM32F0xx_HAL_Driver\stm32f0xx_ll_usart.o
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Drivers\STM32F0xx_HAL_Driver\stm32f0xx_ll_utils.o
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Drivers\CMSIS\system_stm32f0xx.o
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Application\User\Core\tim.o
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Application\User\Core\usart.o
+#        --no_out_extension -o
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Exe\NEC.out --redirect
+#        _Printf=_PrintfFullNoMb --redirect _Scanf=_ScanfFullNoMb --map
+#        C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\List\NEC.map --config
+#        C:\Users\a.alekseev\Documents\NEC\EWARM/stm32f030x6_flash.icf
+#        --semihosting --entry __iar_program_start --vfe --text_out locale)
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor       = *
+__CPP_Runtime   = 1
+__SystemLibrary = DLib
+__dlib_version  = 6
+
+
+*******************************************************************************
+*** HEAP SELECTION
+***
+
+The basic heap was selected because no calls to memory allocation
+functions were found in the application outside of system library
+functions, and there are calls to deallocation functions in the
+application.
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A0":  place at address 0x800'0000 { ro section .intvec };
+"P1":  place in [from 0x800'0000 to 0x800'7fff] { ro };
+define block CSTACK with size = 1K, alignment = 8 { };
+define block HEAP with size = 512, alignment = 8 { };
+"P2":  place in [from 0x2000'0000 to 0x2000'0fff] {
+          rw, block CSTACK, block HEAP };
+initialize by copy { rw };
+
+  Section            Kind         Address   Size  Object
+  -------            ----         -------   ----  ------
+"A0":                                       0xb0
+  .intvec            ro code   0x800'0000   0xb0  startup_stm32f030x6.o [1]
+                             - 0x800'00b0   0xb0
+
+"P1":                                      0xace
+  .text              ro code   0x800'00b0  0x25c  stm32f0xx_ll_tim.o [4]
+  .text              ro code   0x800'030c  0x130  tim.o [2]
+  .text              ro code   0x800'043c   0x14  memset.o [6]
+  .text              ro code   0x800'0450   0xa6  stm32f0xx_ll_gpio.o [4]
+  .text              ro code   0x800'04f6    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'04f8   0x4e  ABImemset.o [6]
+  .text              ro code   0x800'0546    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0548   0xf8  main.o [2]
+  .text              ro code   0x800'0640   0xac  gpio.o [2]
+  .text              ro code   0x800'06ec   0xd8  usart.o [2]
+  .text              ro code   0x800'07c4   0x28  stm32f0xx_ll_utils.o [4]
+  .text              ro code   0x800'07ec   0xa8  stm32f0xx_ll_exti.o [4]
+  .text              ro code   0x800'0894   0xa4  stm32f0xx_ll_usart.o [4]
+  .text              ro code   0x800'0938   0x36  I32DivMod.o [6]
+  .text              ro code   0x800'096e    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0970   0xd0  stm32f0xx_ll_rcc.o [4]
+  .text              ro code   0x800'0a40    0x2  IntDivZer.o [6]
+  .text              ro code   0x800'0a42   0x30  copy_init3.o [6]
+  .text              ro code   0x800'0a72    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0a74   0x28  data_init.o [6]
+  .iar.init_table    const     0x800'0a9c   0x14  - Linker created -
+  .text              ro code   0x800'0ab0   0x1e  stm32f0xx_it.o [2]
+  .text              ro code   0x800'0ace    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0ad0   0x1e  cmain.o [6]
+  .text              ro code   0x800'0aee    0x4  low_level_init.o [5]
+  .text              ro code   0x800'0af2    0x8  exit.o [5]
+  .text              ro code   0x800'0afa    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0afc    0xa  cexit.o [6]
+  .text              ro code   0x800'0b06    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0b08   0x14  exit.o [7]
+  .text              ro code   0x800'0b1c   0x1c  cstartup_M.o [6]
+  .text              ro code   0x800'0b38   0x14  system_stm32f0xx.o [3]
+  .text              ro code   0x800'0b4c   0x10  startup_stm32f030x6.o [1]
+  .rodata            const     0x800'0b5c    0x8  system_stm32f0xx.o [3]
+  Initializer bytes  const     0x800'0b64    0x4  <for P2-1>
+  .text              ro code   0x800'0b68    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0b6a    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0b6c    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0b6e    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0b70    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0b72    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0b74    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0b76    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0b78    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0b7a    0x2  startup_stm32f030x6.o [1]
+  .text              ro code   0x800'0b7c    0x2  startup_stm32f030x6.o [1]
+  .rodata            const     0x800'0b7e    0x0  copy_init3.o [6]
+                             - 0x800'0b7e  0xace
+
+"P2", part 1 of 2:                           0x4
+  P2-1                        0x2000'0000    0x4  <Init block>
+    .data            inited   0x2000'0000    0x4  system_stm32f0xx.o [3]
+                            - 0x2000'0004    0x4
+
+"P2", part 2 of 2:                         0x400
+  CSTACK                      0x2000'0008  0x400  <Block>
+    CSTACK           uninit   0x2000'0008  0x400  <Block tail>
+                            - 0x2000'0408  0x400
+
+Unused ranges:
+
+         From           To    Size
+         ----           --    ----
+   0x800'0b7e   0x800'7fff  0x7482
+  0x2000'0004  0x2000'0007     0x4
+  0x2000'0408  0x2000'0fff   0xbf8
+
+
+*******************************************************************************
+*** INIT TABLE
+***
+
+          Address      Size
+          -------      ----
+Copy (__iar_copy_init3)
+    1 source range, total size 0x4:
+           0x800'0b64   0x4
+    1 destination range, total size 0x4:
+          0x2000'0000   0x4
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module                 ro code  ro data  rw data
+    ------                 -------  -------  -------
+command line/config:
+    ------------------------------------------------
+    Total:
+
+C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Application\EWARM: [1]
+    startup_stm32f030x6.o      228
+    ------------------------------------------------
+    Total:                     228
+
+C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Application\User\Core: [2]
+    gpio.o                     172
+    main.o                     248
+    stm32f0xx_it.o              30
+    tim.o                      304
+    usart.o                    216
+    ------------------------------------------------
+    Total:                     970
+
+C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Drivers\CMSIS: [3]
+    system_stm32f0xx.o          20       12        4
+    ------------------------------------------------
+    Total:                      20       12        4
+
+C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Drivers\STM32F0xx_HAL_Driver: [4]
+    stm32f0xx_ll_exti.o        168
+    stm32f0xx_ll_gpio.o        166
+    stm32f0xx_ll_rcc.o         208
+    stm32f0xx_ll_tim.o         604
+    stm32f0xx_ll_usart.o       164
+    stm32f0xx_ll_utils.o        40
+    ------------------------------------------------
+    Total:                   1'350
+
+dl6M_tln.a: [5]
+    exit.o                       8
+    low_level_init.o             4
+    ------------------------------------------------
+    Total:                      12
+
+rt6M_tl.a: [6]
+    ABImemset.o                 78
+    I32DivMod.o                 54
+    IntDivZer.o                  2
+    cexit.o                     10
+    cmain.o                     30
+    copy_init3.o                48
+    cstartup_M.o                28
+    data_init.o                 40
+    memset.o                    20
+    ------------------------------------------------
+    Total:                     310
+
+shb_l.a: [7]
+    exit.o                      20
+    ------------------------------------------------
+    Total:                      20
+
+    Linker created                       20    1'024
+----------------------------------------------------
+    Grand Total:             2'910       32    1'028
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                       Address   Size  Type      Object
+-----                       -------   ----  ----      ------
+.iar.init_table$$Base    0x800'0a9c          --   Gb  - Linker created -
+.iar.init_table$$Limit   0x800'0ab0          --   Gb  - Linker created -
+?main                    0x800'0ad1         Code  Gb  cmain.o [6]
+AHBPrescTable            0x800'0b3c   0x10  Data  Gb  system_stm32f0xx.o [3]
+APBPrescTable            0x800'0b5c    0x8  Data  Gb  system_stm32f0xx.o [3]
+CSTACK$$Base            0x2000'0008          --   Gb  - Linker created -
+CSTACK$$Limit           0x2000'0408          --   Gb  - Linker created -
+EXTI4_15_IRQHandler      0x800'0abb    0xe  Code  Gb  stm32f0xx_it.o [2]
+HardFault_Handler        0x800'0ab3    0x2  Code  Gb  stm32f0xx_it.o [2]
+LL_AHB1_GRP1_EnableClock
+                         0x800'0641   0x16  Code  Lc  gpio.o [2]
+LL_EXTI_Init             0x800'07ed   0xa2  Code  Gb  stm32f0xx_ll_exti.o [4]
+LL_GPIO_Init             0x800'0451   0xa6  Code  Gb  stm32f0xx_ll_gpio.o [4]
+LL_Init1msTick           0x800'07c5   0x1a  Code  Gb  stm32f0xx_ll_utils.o [4]
+LL_RCC_GetUSARTClockFreq
+                         0x800'0971   0x4e  Code  Gb  stm32f0xx_ll_rcc.o [4]
+LL_SetSystemCoreClock    0x800'07df    0x6  Code  Gb  stm32f0xx_ll_utils.o [4]
+LL_TIM_Init              0x800'00b1   0x62  Code  Gb  stm32f0xx_ll_tim.o [4]
+LL_TIM_OC_Init           0x800'0121  0x1bc  Code  Gb  stm32f0xx_ll_tim.o [4]
+LL_USART_Init            0x800'0895   0x8a  Code  Gb  stm32f0xx_ll_usart.o [4]
+MX_GPIO_Init             0x800'0657   0x82  Code  Gb  gpio.o [2]
+MX_TIM14_Init            0x800'030d   0xae  Code  Gb  tim.o [2]
+MX_TIM16_Init            0x800'03bb   0x5c  Code  Gb  tim.o [2]
+MX_USART1_UART_Init      0x800'06ed   0xd8  Code  Gb  usart.o [2]
+NMI_Handler              0x800'0ab1    0x2  Code  Gb  stm32f0xx_it.o [2]
+PendSV_Handler           0x800'0ab7    0x2  Code  Gb  stm32f0xx_it.o [2]
+RCC_GetHCLKClockFreq     0x800'09d7   0x10  Code  Gb  stm32f0xx_ll_rcc.o [4]
+RCC_GetPCLK1ClockFreq    0x800'09e7   0x10  Code  Gb  stm32f0xx_ll_rcc.o [4]
+RCC_GetSystemClockFreq   0x800'09bf   0x18  Code  Gb  stm32f0xx_ll_rcc.o [4]
+RCC_PLL_GetFreqDomain_SYS
+                         0x800'09f7   0x2e  Code  Gb  stm32f0xx_ll_rcc.o [4]
+Region$$Table$$Base      0x800'0a9c          --   Gb  - Linker created -
+Region$$Table$$Limit     0x800'0ab0          --   Gb  - Linker created -
+SVC_Handler              0x800'0ab5    0x2  Code  Gb  stm32f0xx_it.o [2]
+SysTick_Handler          0x800'0ab9    0x2  Code  Gb  stm32f0xx_it.o [2]
+SystemClock_Config       0x800'0595   0x90  Code  Gb  main.o [2]
+SystemCoreClock         0x2000'0000    0x4  Data  Gb  system_stm32f0xx.o [3]
+SystemInit               0x800'0b39    0x2  Code  Gb  system_stm32f0xx.o [3]
+TIM16_IRQHandler         0x800'0acd    0x2  Code  Gb  stm32f0xx_it.o [2]
+__ICFEDIT_region_RAM_end__ {Abs}
+                        0x2000'0fff         Data  Gb  <internal module>
+__ICFEDIT_region_RAM_start__ {Abs}
+                        0x2000'0000         Data  Gb  <internal module>
+__aeabi_idiv0            0x800'0a41         Code  Gb  IntDivZer.o [6]
+__aeabi_memset           0x800'04f9         Code  Gb  ABImemset.o [6]
+__cmain                  0x800'0ad1         Code  Gb  cmain.o [6]
+__exit                   0x800'0b09   0x14  Code  Gb  exit.o [7]
+__iar_Memset4_word       0x800'0519         Code  Gb  ABImemset.o [6]
+__iar_Memset_word        0x800'0505         Code  Gb  ABImemset.o [6]
+__iar_copy_init3         0x800'0a43   0x30  Code  Gb  copy_init3.o [6]
+__iar_data_init3         0x800'0a75   0x28  Code  Gb  data_init.o [6]
+__iar_program_start      0x800'0b1d         Code  Gb  cstartup_M.o [6]
+__iar_small_uidiv        0x800'0939         Code  Gb  I32DivMod.o [6]
+__iar_small_uidivmod     0x800'0939         Code  Gb  I32DivMod.o [6]
+__low_level_init         0x800'0aef    0x4  Code  Gb  low_level_init.o [5]
+__vector_table           0x800'0000         Data  Gb  startup_stm32f030x6.o [1]
+_call_main               0x800'0add         Code  Gb  cmain.o [6]
+_exit                    0x800'0afd         Code  Gb  cexit.o [6]
+exit                     0x800'0af3    0x8  Code  Gb  exit.o [5]
+main                     0x800'0549   0x4c  Code  Gb  main.o [2]
+memset                   0x800'043d   0x14  Code  Gb  memset.o [6]
+
+
+[1] = C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Application\EWARM
+[2] = C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Application\User\Core
+[3] = C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Drivers\CMSIS
+[4] = C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\Obj\Drivers\STM32F0xx_HAL_Driver
+[5] = dl6M_tln.a
+[6] = rt6M_tl.a
+[7] = shb_l.a
+
+  2'910 bytes of readonly  code memory
+     32 bytes of readonly  data memory
+  1'028 bytes of readwrite data memory
+
+Errors: none
+Warnings: none

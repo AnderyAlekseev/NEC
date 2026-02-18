@@ -1,0 +1,30 @@
+C:\Users\a.alekseev\Documents\NEC\EWARM\NEC\BrowseInfo\Application\User\Core\usart.pbi: \
+  C:\Users\a.alekseev\Documents\NEC\Core\Src\usart.c \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Core\Inc\usart.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Core\Inc\main.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_ll_crs.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\CMSIS\Device\ST\STM32F0xx\Include\stm32f030x6.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\CMSIS\Include\core_cm0.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\stdint.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\ycheck.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\yvals.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\DLib_Defaults.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\DLib_Config_Full.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\DLib_Product.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\CMSIS\Include\cmsis_version.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\CMSIS\Include\cmsis_compiler.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\CMSIS\Include\cmsis_iccarm.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.0\arm\inc\c\aarch32\iccarm_builtin.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_ll_rcc.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_ll_bus.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_ll_system.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_ll_exti.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_ll_cortex.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_ll_utils.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_ll_pwr.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_ll_dma.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_ll_tim.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_ll_usart.h \
+  C:\Users\a.alekseev\Documents\NEC\EWARM\..\Drivers\STM32F0xx_HAL_Driver\Inc\stm32f0xx_ll_gpio.h
