@@ -27,16 +27,7 @@
 /.vscode/BROWSE.*
 
 **/*.dep
-**/*.bin
-**/*.vbf
-**/*.exe
-**/*.dep
-**/*.ewt
-**/*.ewd
-**/*.ewp
-**/*.pbi
-**/*.pbd
-**/*.pbw
+
 **/*.ninja_log
 **/*.ninja_deps
 **/*.log
