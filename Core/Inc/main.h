@@ -70,7 +70,7 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
 uint8_t timeIsOver(uint32_t time_now, uint32_t time_stop);
-void UART_Printf(char *str, uint8_t size);
+
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

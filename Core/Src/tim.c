@@ -115,5 +115,27 @@ void MX_TIM16_Init(void)
 }
 
 /* USER CODE BEGIN 1 */
+void StartNEC_Timer()
+{
+  LL_TIM_EnableIT_UPDATE(TIM16);
+}
+ void StopNEC_Timer()
+ {
+   LL_TIM_DisableIT_UPDATE(TIM16);
+ }
 
+uint32_t getNEC_Timer_tick()
+{
+  return LL_TIM_GetCounter(TIM16);
+}
+
+uint32_t resetNEC_Timer_tick()
+{
+  LL_TIM_SetCounter(TIM16, 0);
+}
+
+uint32_t getNEC_Timer_us()
+{
+
+}
 /* USER CODE END 1 */

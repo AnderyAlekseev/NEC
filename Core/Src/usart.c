@@ -19,9 +19,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
-
+#include "cbuff/cbuff.h"
 /* USER CODE BEGIN 0 */
-
+uint8_t buf_tx_mem[128];
+uint8_t buf_tx_tmp[128]; // 
+cbuff_t CB_Tx;
 /* USER CODE END 0 */
 
 /* USART1 init function */
@@ -76,11 +78,45 @@ void MX_USART1_UART_Init(void)
   LL_USART_ConfigAsyncMode(USART1);
   LL_USART_Enable(USART1);
   /* USER CODE BEGIN USART1_Init 2 */
-
+  //! кольцевой буфер
+  cbuff_init(&CB_Tx, buf_tx_mem, sizeof(buf_tx_mem));
   /* USER CODE END USART1_Init 2 */
 
 }
 
 /* USER CODE BEGIN 1 */
+/*LL_USART_TransmitData8(USART_TypeDef *USARTx, uint8_t Value);
+LL_USART_ReceiveData8(const USART_TypeDef *USARTx);
+LL_USART_IsActiveFlag_BUSY(const USART_TypeDef *USARTx)
+LL_USART_IsActiveFlag_TXE(const USART_TypeDef *USARTx)
 
+*/
+
+void UART_Printf(char *str, uint8_t size)
+{
+  write_to_cbuff(&CB_Tx, str, size);
+}
+
+void UART_Tx(char *str, uint8_t size)
+{
+  while(size)
+  {
+    while(!LL_USART_IsActiveFlag_TXE(USART1))
+    ;
+    LL_USART_TransmitData8(USART1, *str);
+    str++;
+    size--;
+  }
+}
+
+void UART_debug_mess_Handle(void)
+{
+  uint16_t len = filled_cbuff_len(&CB_Tx);
+  if(len)
+  {
+    uint8_t *out = cbuff_read_data(&CB_Tx);
+    UART_Tx(out, len);
+    clean_cbuff_len_from_reader(&CB_Tx, len);
+  }
+}
 /* USER CODE END 1 */

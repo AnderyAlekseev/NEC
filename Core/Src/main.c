@@ -25,6 +25,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stm32f0xx_it.h"
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,7 +52,6 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-void UART_Tx(USART_TypeDef *USARTx, uint8_t Value);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -67,7 +67,9 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
- char hello[] = "Hello\n\r";
+ char hello[] = "Hello";
+ float test = 0.123;
+ char print_buf[128];
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -110,12 +112,14 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     time_now = SysGetTick();
-    if( timeIsOver( time_now,  time_stop)){
+    if( timeIsOver( time_now,  time_stop))
+    {
       time_stop = time_now + timeOut_ms;
-      UART_Printf(hello, sizeof(hello)); 
+      uint32_t sz = snprintf(print_buf, sizeof(print_buf), "%s %f\r\n", hello, test);
+      UART_Printf(print_buf, sz);
     }
     
-    
+    UART_debug_mess_Handle();
   }
   /* USER CODE END 3 */
 }
@@ -161,31 +165,6 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-/*LL_USART_TransmitData8(USART_TypeDef *USARTx, uint8_t Value);
-LL_USART_ReceiveData8(const USART_TypeDef *USARTx);
-LL_USART_IsActiveFlag_BUSY(const USART_TypeDef *USARTx)
-LL_USART_IsActiveFlag_TXE(const USART_TypeDef *USARTx)
-
-*/
-void UART_Tx(USART_TypeDef *USARTx, uint8_t Value)
-{
-  while(!LL_USART_IsActiveFlag_TXE(USARTx))
-    ;
-  
-  LL_USART_TransmitData8(USARTx, Value);
-
-}
-
-void UART_Printf(char *str, uint8_t size)
-{
-  while(size)
-  {
-    UART_Tx(USART1, *str);
-    str++;
-    size--;
-  }
-  
-}
 
 uint8_t timeIsOver(uint32_t time_now, uint32_t time_stop)
 {
