@@ -887,7 +887,8 @@ __STATIC_INLINE void LL_EXTI_GenerateSWI_0_31(uint32_t ExtiLine)
   * @note   Please check each device line mapping for EXTI Line availability
   * @retval State of bit (1 or 0).
   */
-__STATIC_INLINE uint32_t LL_EXTI_IsActiveFlag_0_31(uint32_t ExtiLine)
+__STATIC_INLINE uint32_t 
+LL_EXTI_IsActiveFlag_0_31(uint32_t ExtiLine)
 {
   return (READ_BIT(EXTI->PR, ExtiLine) == (ExtiLine));
 }

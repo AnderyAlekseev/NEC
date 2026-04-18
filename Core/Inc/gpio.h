@@ -39,7 +39,7 @@ extern "C" {
 void MX_GPIO_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
+uint32_t GetRxPinState();
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

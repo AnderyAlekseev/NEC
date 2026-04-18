@@ -89,14 +89,15 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-   SysTick_Config(8000);
+   SysTick_Config(18000);
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_TIM14_Init();
+//  MX_TIM14_Init();
   MX_USART1_UART_Init();
-  MX_TIM16_Init();
+  NEC_RX_TimerInit();
+
   /* USER CODE BEGIN 2 */
     uint32_t time_now , time_stop;
     uint32_t const timeOut_ms = 5000;
@@ -118,7 +119,7 @@ int main(void)
       uint32_t sz = snprintf(print_buf, sizeof(print_buf), "%s %f\r\n", hello, test);
       UART_Printf(print_buf, sz);
     }
-    
+    NEC_RX_Poll();
     UART_debug_mess_Handle();
   }
   /* USER CODE END 3 */
@@ -131,36 +132,29 @@ int main(void)
 void SystemClock_Config(void)
 {
   LL_FLASH_SetLatency(LL_FLASH_LATENCY_0);
-  while(LL_FLASH_GetLatency() != LL_FLASH_LATENCY_0)
-  {
+  while(LL_FLASH_GetLatency() != LL_FLASH_LATENCY_0)  {
   }
   LL_RCC_HSI_Enable();
 
    /* Wait till HSI is ready */
-  while(LL_RCC_HSI_IsReady() != 1)
-  {
-
+  while(LL_RCC_HSI_IsReady() != 1)  {
   }
   LL_RCC_HSI_SetCalibTrimming(16);
-  LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI_DIV_2, LL_RCC_PLL_MUL_4);
+  LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI_DIV_2, LL_RCC_PLL_MUL_9);
   LL_RCC_PLL_Enable();
 
    /* Wait till PLL is ready */
-  while(LL_RCC_PLL_IsReady() != 1)
-  {
-
+  while(LL_RCC_PLL_IsReady() != 1)  {
   }
   LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_2);
   LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
   LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
 
    /* Wait till System clock is ready */
-  while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
-  {
-
+  while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)  {
   }
-  LL_Init1msTick(8000000);
-  LL_SetSystemCoreClock(8000000);
+  LL_Init1msTick(18000000);
+  LL_SetSystemCoreClock(18000000);
   LL_RCC_SetUSARTClockSource(LL_RCC_USART1_CLKSOURCE_PCLK1);
 }
 

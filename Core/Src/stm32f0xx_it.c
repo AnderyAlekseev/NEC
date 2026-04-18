@@ -151,18 +151,14 @@ void EXTI4_15_IRQHandler(void)
   /* USER CODE BEGIN EXTI4_15_IRQn 0 */
 
   /* USER CODE END EXTI4_15_IRQn 0 */
-  if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_5) != RESET)
+//  if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_5) != RESET)
+  if(LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_5))
   {
     LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_5);
     /* USER CODE BEGIN LL_EXTI_LINE_5 */
-    uint32_t exti_input = LL_GPIO_IsInputPinSet(GPIOA, LL_GPIO_PIN_5);
-    if(exti_input){
-      /*��������� ������� ��������, ��������� ������������ ����������, ����� ���� ���������� ������ */
-    }
-    else{
-      /*�������� ��������� ���, 9�� ��� 560 ���*/
-      
-    }
+    NEC_RX_TimerStop();
+    NEC_RX_SetTick();
+    NEC_RX_TimerStart();
     /* USER CODE END LL_EXTI_LINE_5 */
   }
   /* USER CODE BEGIN EXTI4_15_IRQn 1 */
@@ -176,7 +172,14 @@ void EXTI4_15_IRQHandler(void)
 void TIM16_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM16_IRQn 0 */
-
+  if(LL_TIM_IsActiveFlag_UPDATE(TIM16) )
+  {
+    LL_TIM_ClearFlag_UPDATE(TIM16);
+//    LL_TIM_DisableCounter(TIM16);
+//    NEC_RX_Init();
+     LL_GPIO_TogglePin(GPIOA, LL_GPIO_PIN_6);
+  }
+  
   /* USER CODE END TIM16_IRQn 0 */
   /* USER CODE BEGIN TIM16_IRQn 1 */
 

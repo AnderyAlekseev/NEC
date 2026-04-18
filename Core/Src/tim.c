@@ -74,7 +74,8 @@ void MX_TIM14_Init(void)
 
 }
 /* TIM16 init function */
-void MX_TIM16_Init(void)
+//void MX_TIM16_Init(void)
+void NEC_RX_TimerInit(void)
 {
 
   /* USER CODE BEGIN TIM16_Init 0 */
@@ -101,9 +102,9 @@ void MX_TIM16_Init(void)
   /* USER CODE BEGIN TIM16_Init 1 */
 
   /* USER CODE END TIM16_Init 1 */
-  TIM_InitStruct.Prescaler = 180;
+  TIM_InitStruct.Prescaler = 18-1;// 1 тик = 1 мкс
   TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
-  TIM_InitStruct.Autoreload = 10000;
+  TIM_InitStruct.Autoreload = 10000;// 10мс
   TIM_InitStruct.ClockDivision = LL_TIM_CLOCKDIVISION_DIV1;
   TIM_InitStruct.RepetitionCounter = 0;
   LL_TIM_Init(TIM16, &TIM_InitStruct);
@@ -115,27 +116,29 @@ void MX_TIM16_Init(void)
 }
 
 /* USER CODE BEGIN 1 */
-void StartNEC_Timer()
+void NEC_RX_TimerStart(void)
 {
-  LL_TIM_EnableIT_UPDATE(TIM16);
+   LL_TIM_ClearFlag_UPDATE(TIM16);
+   LL_TIM_EnableIT_UPDATE(TIM16);
+   LL_TIM_EnableCounter(TIM16);
 }
- void StopNEC_Timer()
+ void NEC_RX_TimerStop(void)
  {
    LL_TIM_DisableIT_UPDATE(TIM16);
  }
 
-uint32_t getNEC_Timer_tick()
+uint32_t NEC_RX_GetTimerTick()
 {
   return LL_TIM_GetCounter(TIM16);
 }
 
-uint32_t resetNEC_Timer_tick()
+void NEC_RX_TimerReset(void)
 {
   LL_TIM_SetCounter(TIM16, 0);
 }
 
 uint32_t getNEC_Timer_us()
 {
-
+  return 0;
 }
 /* USER CODE END 1 */
