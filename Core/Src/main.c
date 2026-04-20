@@ -21,7 +21,7 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
-
+#include "NEC/nec_rx.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stm32f0xx_it.h"
@@ -89,7 +89,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-   SysTick_Config(18000);
+   SysTick_Config(32000);
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -116,10 +116,15 @@ int main(void)
     if( timeIsOver( time_now,  time_stop))
     {
       time_stop = time_now + timeOut_ms;
-      uint32_t sz = snprintf(print_buf, sizeof(print_buf), "%s %f\r\n", hello, test);
-      UART_Printf(print_buf, sz);
+//      uint32_t sz = snprintf(print_buf, sizeof(print_buf), "%s %f\r\n", hello, test);
+//      UART_Printf(print_buf, sz);
+//      UART_Printf("%s %f\r\n", hello, test);
     }
-    NEC_RX_Poll();
+
+    if( NEC_RX_IsComplete() ){
+      NEC_RX_CompleteReset();
+      UART_Printf("Address %d Command %d\r\n", NEC_RX_Get_Address(), NEC_RX_Get_Command());
+    }
     UART_debug_mess_Handle();
   }
   /* USER CODE END 3 */
@@ -140,21 +145,21 @@ void SystemClock_Config(void)
   while(LL_RCC_HSI_IsReady() != 1)  {
   }
   LL_RCC_HSI_SetCalibTrimming(16);
-  LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI_DIV_2, LL_RCC_PLL_MUL_9);
+  LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI_DIV_2, LL_RCC_PLL_MUL_12);
   LL_RCC_PLL_Enable();
 
    /* Wait till PLL is ready */
   while(LL_RCC_PLL_IsReady() != 1)  {
   }
-  LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_2);
+  LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
   LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
   LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
 
    /* Wait till System clock is ready */
   while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)  {
   }
-  LL_Init1msTick(18000000);
-  LL_SetSystemCoreClock(18000000);
+  LL_Init1msTick(48000000);
+  LL_SetSystemCoreClock(48000000);
   LL_RCC_SetUSARTClockSource(LL_RCC_USART1_CLKSOURCE_PCLK1);
 }
 

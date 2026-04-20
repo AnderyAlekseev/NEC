@@ -38,11 +38,6 @@ extern "C" {
 
 void MX_TIM14_Init(void);
 
-void NEC_RX_TimerInit(void);
-void NEC_RX_TimerStart(void);
-void NEC_RX_TimerStop(void);
-uint32_t NEC_RX_GetTimerTick();
-void NEC_RX_TimerReset(void);
 /* USER CODE BEGIN Prototypes */
 
 /* USER CODE END Prototypes */

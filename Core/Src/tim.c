@@ -75,67 +75,7 @@ void MX_TIM14_Init(void)
 }
 /* TIM16 init function */
 //void MX_TIM16_Init(void)
-void NEC_RX_TimerInit(void)
-{
 
-  /* USER CODE BEGIN TIM16_Init 0 */
-/* ������� ���� 18���, � ������������� 180 1 ��� = 10���.
-��� ����� �����/���� ���                560���          ARR = 56 (Autoreload)
-��� ��������� ������������������        9��             ARR = 900
-�����                                   4.5 ��          ARR = 450
-����� �������                           2.25��          ARR = 225
-������������ 1                          2.25��          ARR = 225 (������� �����/���� ��� )
-������������ 0                          1.12��          ARR = 112 (������� �����/���� ��� )
-������������ ������� ������             ~80��           ARR = 8000 
-*/
-  /* USER CODE END TIM16_Init 0 */
-
-  LL_TIM_InitTypeDef TIM_InitStruct = {0};
-
-  /* Peripheral clock enable */
-  LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_TIM16);
-
-  /* TIM16 interrupt Init */
-  NVIC_SetPriority(TIM16_IRQn, 0);
-  NVIC_EnableIRQ(TIM16_IRQn);
-
-  /* USER CODE BEGIN TIM16_Init 1 */
-
-  /* USER CODE END TIM16_Init 1 */
-  TIM_InitStruct.Prescaler = 18-1;// 1 тик = 1 мкс
-  TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
-  TIM_InitStruct.Autoreload = 10000;// 10мс
-  TIM_InitStruct.ClockDivision = LL_TIM_CLOCKDIVISION_DIV1;
-  TIM_InitStruct.RepetitionCounter = 0;
-  LL_TIM_Init(TIM16, &TIM_InitStruct);
-  LL_TIM_DisableARRPreload(TIM16);
-  /* USER CODE BEGIN TIM16_Init 2 */
-
-  /* USER CODE END TIM16_Init 2 */
-
-}
-
-/* USER CODE BEGIN 1 */
-void NEC_RX_TimerStart(void)
-{
-   LL_TIM_ClearFlag_UPDATE(TIM16);
-   LL_TIM_EnableIT_UPDATE(TIM16);
-   LL_TIM_EnableCounter(TIM16);
-}
- void NEC_RX_TimerStop(void)
- {
-   LL_TIM_DisableIT_UPDATE(TIM16);
- }
-
-uint32_t NEC_RX_GetTimerTick()
-{
-  return LL_TIM_GetCounter(TIM16);
-}
-
-void NEC_RX_TimerReset(void)
-{
-  LL_TIM_SetCounter(TIM16, 0);
-}
 
 uint32_t getNEC_Timer_us()
 {

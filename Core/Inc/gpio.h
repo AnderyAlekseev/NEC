@@ -40,6 +40,7 @@ void MX_GPIO_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 uint32_t GetRxPinState();
+void IR_Line_ToggleEXTI_Trigger(uint8_t Trigger);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

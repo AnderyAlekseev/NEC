@@ -25,20 +25,36 @@ typedef enum
 
 typedef struct {
  nec_fsm_state_e        state; 
- uint16_t               start_time;
- uint16_t               space_time;
- uint8_t                address;  
- uint8_t                n_address; 
- uint8_t                command;  
- uint8_t                n_command; 
+
+// uint16_t               start_time;
+// uint16_t               space_time;
+ union{
+   struct{
+     uint8_t                address;  
+     uint8_t                n_address; 
+     uint8_t                command;  
+     uint8_t                n_command; 
+   }fild;
+    uint32_t REG;  
+ };
  uint16_t               tim_cnt;       
  uint8_t                bit_cnt; 
+ uint8_t                indx;
  bool                   done;
+ bool                   fast_next_state;
+ bool                   complete;
 }nec_t;
 
 void NEC_RX_Init(void);
 void NEC_RX_Poll(void);
-bool NEC_RX_IsDone(void);
+bool NEC_RX_IsComplete(void);
+void NEC_RX_CompleteReset(void);
 void NEC_RX_SetTick(void);
+void NEC_RX_TimerInit(void);
+void NEC_RX_TimerStart(void);
+void NEC_RX_TimerStop(void);
+void NEC_RX_TimerReset(void);
+uint8_t NEC_RX_Get_Command(void);
+uint8_t NEC_RX_Get_Address(void);
 
 #endif //NEC_RX_H

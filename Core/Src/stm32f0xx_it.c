@@ -20,6 +20,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f0xx_it.h"
+#include "NEC/nec_rx.h"
+#include "tim.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -146,6 +148,7 @@ void SysTick_Handler(void)
 /**
   * @brief This function handles EXTI line 4 to 15 interrupts.
   */
+
 void EXTI4_15_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI4_15_IRQn 0 */
@@ -155,11 +158,7 @@ void EXTI4_15_IRQHandler(void)
   if(LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_5))
   {
     LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_5);
-    /* USER CODE BEGIN LL_EXTI_LINE_5 */
-    NEC_RX_TimerStop();
-    NEC_RX_SetTick();
-    NEC_RX_TimerStart();
-    /* USER CODE END LL_EXTI_LINE_5 */
+    NEC_RX_Poll();
   }
   /* USER CODE BEGIN EXTI4_15_IRQn 1 */
 
@@ -175,9 +174,9 @@ void TIM16_IRQHandler(void)
   if(LL_TIM_IsActiveFlag_UPDATE(TIM16) )
   {
     LL_TIM_ClearFlag_UPDATE(TIM16);
-//    LL_TIM_DisableCounter(TIM16);
-//    NEC_RX_Init();
-     LL_GPIO_TogglePin(GPIOA, LL_GPIO_PIN_6);
+    LL_TIM_DisableCounter(TIM16);
+    NEC_RX_Init();
+//     LL_GPIO_TogglePin(GPIOA, LL_GPIO_PIN_6);
   }
   
   /* USER CODE END TIM16_IRQn 0 */

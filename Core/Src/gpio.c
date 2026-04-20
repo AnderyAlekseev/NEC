@@ -124,7 +124,7 @@ void MX_GPIO_Init(void)
   EXTI_InitStruct.Line_0_31 = LL_EXTI_LINE_5;
   EXTI_InitStruct.LineCommand = ENABLE;
   EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
-  EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING_FALLING;//LL_EXTI_TRIGGER_RISING_FALLING;
+  EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_FALLING;//LL_EXTI_TRIGGER_RISING_FALLING;
   LL_EXTI_Init(&EXTI_InitStruct);
 
   /* EXTI interrupt init*/
@@ -133,6 +133,22 @@ void MX_GPIO_Init(void)
 
 }
 
+
+void IR_Line_ToggleEXTI_Trigger(uint8_t Trigger)
+{
+
+  switch(Trigger)
+  {
+    case LL_EXTI_TRIGGER_RISING:
+      LL_EXTI_DisableFallingTrig_0_31(LL_EXTI_LINE_5);
+      LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_5);
+      break;
+    case LL_EXTI_TRIGGER_FALLING:
+      LL_EXTI_DisableRisingTrig_0_31(LL_EXTI_LINE_5);
+      LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_5);
+      break;
+  }
+}
 /* USER CODE BEGIN 2 */
 uint32_t GetRxPinState()
 {

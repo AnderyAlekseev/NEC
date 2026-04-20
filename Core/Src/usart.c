@@ -19,6 +19,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
+#include <stdarg.h>
+#include <stdio.h>
 #include "cbuff/cbuff.h"
 /* USER CODE BEGIN 0 */
 uint8_t buf_tx_mem[128];
@@ -91,10 +93,25 @@ LL_USART_IsActiveFlag_BUSY(const USART_TypeDef *USARTx)
 LL_USART_IsActiveFlag_TXE(const USART_TypeDef *USARTx)
 
 */
+//      uint32_t sz = snprintf(print_buf, sizeof(print_buf), "%s %f\r\n", hello, test);
+//      UART_Printf(print_buf, sz);
+static char     buff[512];
+static uint16_t txbuff_offset;
 
-void UART_Printf(char *str, uint8_t size)
+void UART_Printf(char *format, ...)
 {
-  write_to_cbuff(&CB_Tx, str, size);
+  va_list args;
+  va_start(args, format);
+  uint16_t sz  = vsnprintf(NULL, 0, format, args);
+   
+    if (sz < sizeof(buff))
+  {
+    sz  = vsnprintf(buff, sizeof(buff), format, args);
+    write_to_cbuff(&CB_Tx, buff, sz);
+  
+  }
+//  
+    va_end(args);
 }
 
 void UART_Tx(char *str, uint8_t size)
