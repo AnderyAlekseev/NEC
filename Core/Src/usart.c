@@ -23,8 +23,8 @@
 #include <stdio.h>
 #include "cbuff/cbuff.h"
 /* USER CODE BEGIN 0 */
-uint8_t buf_tx_mem[128];
-uint8_t buf_tx_tmp[128]; // 
+uint8_t buf_tx_mem[512];
+//uint8_t buf_tx_tmp[128]; // 
 cbuff_t CB_Tx;
 /* USER CODE END 0 */
 

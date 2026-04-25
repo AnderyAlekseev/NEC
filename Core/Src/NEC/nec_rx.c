@@ -12,6 +12,7 @@ uint16_t max;
 typedef struct {
   range_t start;
   range_t space;
+  range_t repeat;
   range_t mark_bit;
   range_t bit_0;
   range_t bit_1;
@@ -21,6 +22,7 @@ typedef struct {
 range_pulse_t RangeNEC={
 .start  = { 8200, 9500 },
 .space  = { 4200, 4600 },
+.repeat = { 2100, 2500},
 .mark_bit={ 450, 600 },
 .bit_0  = { 450, 600 },
 .bit_1  = { 1200, 2000 }
@@ -43,7 +45,6 @@ void NEC_RX_Init(void)
     NEC_RX.tim_cnt = 0;
     NEC_RX.indx = 0;
     NEC_RX.done = false;
-//    NEC_RX.complete = false;
     IR_Line_ToggleEXTI_Trigger(LL_EXTI_TRIGGER_FALLING);
     NEC_RX_TimerStop();
 }
@@ -52,10 +53,15 @@ bool NEC_RX_IsComplete(void)
 {
   return NEC_RX.complete;
 }
+bool NEC_RX_IsRepeat(void)
+{
+  return NEC_RX.repeat ;
+}
 
 void NEC_RX_CompleteReset(void)
 {
   NEC_RX.complete = false;
+  NEC_RX.repeat   = false;      
 }
 
 void NEC_RX_SetTick(void)
@@ -106,6 +112,10 @@ void NEC_RX_Poll(void)
               if(NEC_RX.tim_cnt < RangeNEC.space.max && NEC_RX.tim_cnt >= RangeNEC.space.min  ){
                 NEC_RX_SetState(NEC_MARK_BIT);
               }
+              else if(NEC_RX.tim_cnt < RangeNEC.repeat.max && NEC_RX.tim_cnt >= RangeNEC.repeat.min){
+                NEC_RX.repeat = true;
+                NEC_RX_SetState(NEC_MARK_BIT);
+              }
               else{
                 NEC_RX_SetState(NEC_END);
               }
@@ -118,7 +128,7 @@ void NEC_RX_Poll(void)
               arr_tim_cnt[NEC_RX.indx++] = NEC_RX.tim_cnt;
               if(NEC_RX.tim_cnt < RangeNEC.mark_bit.max && NEC_RX.tim_cnt >= RangeNEC.mark_bit.min  )
               {
-                if(NEC_RX.bit_cnt <= 31){
+                if(NEC_RX.bit_cnt <= 31 && !NEC_RX.repeat){
                   NEC_RX_SetState(NEC_BIT);
                 }
                 else{
@@ -152,33 +162,37 @@ void NEC_RX_Poll(void)
               }
             }
             break;
-         
+
           case NEC_END:
             {
               if(NEC_RX.done == true)
               {
-                for(uint8_t i=3, bit_cnt=0; bit_cnt<32; i+=2, bit_cnt++)
+                if(NEC_RX.repeat )
                 {
-                   if(arr_tim_cnt[i] < RangeNEC.bit_0.max && arr_tim_cnt[i] >= RangeNEC.bit_0.min  )
-                    {
-                      CLEAR_BIT(NEC_RX.REG, (1<<bit_cnt)) ;
-                    }
-                    else if(arr_tim_cnt[i] < RangeNEC.bit_1.max && arr_tim_cnt[i] >= RangeNEC.bit_1.min )
-                    {
-                      SET_BIT(NEC_RX.REG, (1<<bit_cnt)) ;
-                    } 
-                }
-                
-//                UART_Printf( "Command 0x%0X\r\n",NEC_RX.REG);
-                volatile uint8_t com = NEC_RX.fild.command ;
-                volatile uint8_t n_com = ~NEC_RX.fild.n_command;
-                volatile uint8_t adr = NEC_RX.fild.address ;
-                volatile uint8_t n_adr = ~NEC_RX.fild.n_address;
-                
-                if((com == n_com ) && (adr == n_adr)){
                   NEC_RX.complete = true;
                 }
-                
+                else{
+                  for(uint8_t i=3, bit_cnt=0; bit_cnt<32; i+=2, bit_cnt++)
+                  {
+                     if(arr_tim_cnt[i] < RangeNEC.bit_0.max && arr_tim_cnt[i] >= RangeNEC.bit_0.min  )
+                      {
+                        CLEAR_BIT(NEC_RX.REG, (1<<bit_cnt)) ;
+                      }
+                      else if(arr_tim_cnt[i] < RangeNEC.bit_1.max && arr_tim_cnt[i] >= RangeNEC.bit_1.min )
+                      {
+                        SET_BIT(NEC_RX.REG, (1<<bit_cnt)) ;
+                      } 
+                  }
+                  
+                  volatile uint8_t com = NEC_RX.fild.command ;
+                  volatile uint8_t n_com = ~NEC_RX.fild.n_command;
+                  volatile uint8_t adr = NEC_RX.fild.address ;
+                  volatile uint8_t n_adr = ~NEC_RX.fild.n_address;
+                  
+                  if((com == n_com ) && (adr == n_adr)){
+                    NEC_RX.complete = true;
+                  }
+                }
               }
              NEC_RX_Init();
             }

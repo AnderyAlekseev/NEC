@@ -122,8 +122,8 @@ int main(void)
     }
 
     if( NEC_RX_IsComplete() ){
+      UART_Printf("Address %d %sCommand %d\r", NEC_RX_Get_Address(), NEC_RX_IsRepeat()?"Repeat ":"", NEC_RX_Get_Command());
       NEC_RX_CompleteReset();
-      UART_Printf("Address %d Command %d\r\n", NEC_RX_Get_Address(), NEC_RX_Get_Command());
     }
     UART_debug_mess_Handle();
   }
