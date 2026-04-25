@@ -1,4 +1,4 @@
-#include "nec_rx.h"
+#include "nec_Rx.h"
 #include "tim.h"
 #include "gpio.h"
 
@@ -226,7 +226,7 @@ void NEC_RX_TimerInit(void)
 
   TIM_InitStruct.Prescaler = 48;// 1 тик = 1 мкс
   TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
-  TIM_InitStruct.Autoreload = 80000;// 80мс
+  TIM_InitStruct.Autoreload = 30000;// 30мс
   TIM_InitStruct.ClockDivision = LL_TIM_CLOCKDIVISION_DIV1;
   TIM_InitStruct.RepetitionCounter = 0;
   LL_TIM_Init(TIM16, &TIM_InitStruct);

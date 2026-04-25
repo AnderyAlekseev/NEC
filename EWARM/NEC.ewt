@@ -1444,10 +1444,16 @@
                 <group>
                     <name>NEC</name>
                     <file>
-                        <name>$PROJ_DIR$\..\Core\Src\NEC\nec_rx.c</name>
+                        <name>$PROJ_DIR$\..\Core\Src\NEC\nec_Rx.c</name>
                     </file>
                     <file>
-                        <name>$PROJ_DIR$\..\Core\Src\NEC\nec_rx.h</name>
+                        <name>$PROJ_DIR$\..\Core\Src\NEC\nec_Rx.h</name>
+                    </file>
+                    <file>
+                        <name>$PROJ_DIR$\..\Core\Src\NEC\nec_Tx.c</name>
+                    </file>
+                    <file>
+                        <name>$PROJ_DIR$\..\Core\Src\NEC\nec_Tx.h</name>
                     </file>
                 </group>
                 <file>

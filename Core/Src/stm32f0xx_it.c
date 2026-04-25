@@ -20,7 +20,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f0xx_it.h"
-#include "NEC/nec_rx.h"
+#include "NEC/nec_Rx.h"
+#include "NEC/nec_Tx.h"
 #include "tim.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -151,18 +152,12 @@ void SysTick_Handler(void)
 
 void EXTI4_15_IRQHandler(void)
 {
-  /* USER CODE BEGIN EXTI4_15_IRQn 0 */
-
-  /* USER CODE END EXTI4_15_IRQn 0 */
-//  if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_5) != RESET)
   if(LL_EXTI_ReadFlag_0_31(LL_EXTI_LINE_5))
   {
     LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_5);
     NEC_RX_Poll();
   }
-  /* USER CODE BEGIN EXTI4_15_IRQn 1 */
 
-  /* USER CODE END EXTI4_15_IRQn 1 */
 }
 
 /**

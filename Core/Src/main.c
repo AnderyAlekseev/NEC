@@ -21,7 +21,8 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
-#include "NEC/nec_rx.h"
+#include "NEC/nec_Rx.h"
+#include "NEC/nec_Tx.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stm32f0xx_it.h"
@@ -67,9 +68,8 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
- char hello[] = "Hello";
- float test = 0.123;
- char print_buf[128];
+
+// char print_buf[128];
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -97,7 +97,8 @@ int main(void)
 //  MX_TIM14_Init();
   MX_USART1_UART_Init();
   NEC_RX_TimerInit();
-
+  NEC_TX_OutInit();
+  NEC_TX_TimerInit();
   /* USER CODE BEGIN 2 */
     uint32_t time_now , time_stop;
     uint32_t const timeOut_ms = 5000;
@@ -107,25 +108,26 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
   while (1)
   {
-    /* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
     time_now = SysGetTick();
     if( timeIsOver( time_now,  time_stop))
     {
       time_stop = time_now + timeOut_ms;
-//      uint32_t sz = snprintf(print_buf, sizeof(print_buf), "%s %f\r\n", hello, test);
-//      UART_Printf(print_buf, sz);
-//      UART_Printf("%s %f\r\n", hello, test);
     }
 
     if( NEC_RX_IsComplete() ){
-      UART_Printf("Address %d %sCommand %d\r", NEC_RX_Get_Address(), NEC_RX_IsRepeat()?"Repeat ":"", NEC_RX_Get_Command());
+//      UART_Printf("Address %d %sCommand %d\r", NEC_RX_Get_Address(), NEC_RX_IsRepeat()?"Repeat ":"", NEC_RX_Get_Command());
+      //__ запуск передатчика
+      NEC_TX_SendCommand(NEC_RX_Get_Address(), NEC_RX_Get_Command(),  NEC_RX_IsRepeat());
       NEC_RX_CompleteReset();
+
+      
     }
-    UART_debug_mess_Handle();
+    NEC_TX_Proced();
+//    UART_debug_mess_Handle();
   }
   /* USER CODE END 3 */
 }
