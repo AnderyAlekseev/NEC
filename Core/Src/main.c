@@ -24,112 +24,96 @@
 #include "NEC/nec_Rx.h"
 #include "NEC/nec_Tx.h"
 /* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
 #include "stm32f0xx_it.h"
 #include <stdio.h>
-/* USER CODE END Includes */
-
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
-
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-/* USER CODE BEGIN PFP */
-/* USER CODE END PFP */
 
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
+#define REC_ADDR       0
+#define SEND_ADDR      7
+#define INDX_REC       0
+#define INDX_SEND      1
+// the first column is the received command
+// the second column is the one being sent
+const uint8_t compliance_table[][2]={
+  {69,   21},//MUTE
+  {70,   67},// on/off
+  {71,   70},// mode, 2.0 or 5.1
+  
+  {21,   86},// volume+
+  {7,    82},// volume-
+  {12,   7},// sub_lvl+
+  {8,    3},// sub_lvl-
+  {24,   6},// center_lvl+
+  {28,   2},// center_lvl-
+  {94,   4},// surround_lvl+
+  {90,   0},// surround_lvl-
+  
+};
 
-/* USER CODE END 0 */
 
+
+uint8_t get_send_comm(uint8_t rec_comm)
+{
+  uint8_t comm=0;
+  uint8_t nm_rows = sizeof(compliance_table)/sizeof(compliance_table[0]);
+  do{
+    nm_rows--;
+    if(compliance_table[nm_rows][INDX_REC] == rec_comm){
+      comm = compliance_table[nm_rows][INDX_SEND];
+      break;  
+    }
+  }while(nm_rows);
+  return comm;
+}
+
+void test_coom()
+{
+   uint8_t nm_rows = sizeof(compliance_table)/sizeof(compliance_table[0]);
+   uint8_t com =0;
+   for(uint8_t i=1; i<=nm_rows; i++){
+    com = get_send_comm(i);
+   }
+}
 /**
   * @brief  The application entry point.
   * @retval int
   */
 int main(void)
 {
-
-  /* USER CODE BEGIN 1 */
-
-// char print_buf[128];
-  /* USER CODE END 1 */
-
-  /* MCU Configuration--------------------------------------------------------*/
-
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   LL_APB1_GRP2_EnableClock(LL_APB1_GRP2_PERIPH_SYSCFG);
   LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
-
-  /* SysTick_IRQn interrupt configuration */
   NVIC_SetPriority(SysTick_IRQn, 3);
-
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
-
-  /* Configure the system clock */
   SystemClock_Config();
-
-  /* USER CODE BEGIN SysInit */
-   SysTick_Config(32000);
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
+  SysTick_Config(32000);
   MX_GPIO_Init();
-//  MX_TIM14_Init();
   MX_USART1_UART_Init();
+  NEC_RX_Input_Init();
   NEC_RX_TimerInit();
   NEC_TX_OutInit();
   NEC_TX_TimerInit();
-  /* USER CODE BEGIN 2 */
-    uint32_t time_now , time_stop;
-    uint32_t const timeOut_ms = 5000;
-    time_now = SysGetTick();
-    time_stop = time_now + timeOut_ms;
-  /* USER CODE END 2 */
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-
+//   test_coom();
   while (1)
   {
-
-    time_now = SysGetTick();
-    if( timeIsOver( time_now,  time_stop))
+    
+    if( NEC_RX_IsComplete() )
     {
-      time_stop = time_now + timeOut_ms;
-    }
-
-    if( NEC_RX_IsComplete() ){
-//      UART_Printf("Address %d %sCommand %d\r", NEC_RX_Get_Address(), NEC_RX_IsRepeat()?"Repeat ":"", NEC_RX_Get_Command());
-      //__ запуск передатчика
-      NEC_TX_SendCommand(NEC_RX_Get_Address(), NEC_RX_Get_Command(),  NEC_RX_IsRepeat());
-      NEC_RX_CompleteReset();
-
-      
+       UART_Printf("Address %d %sCommand %d\r\n", NEC_RX_Get_Address(), NEC_RX_IsRepeat()?"Repeat ":"", NEC_RX_Get_Command());
+      //__ starting the transmitter
+       if(NEC_RX_Get_Address() == REC_ADDR)
+       {// if it is addressed to this device
+        uint8_t send_comm = get_send_comm(NEC_RX_Get_Command());
+        NEC_TX_SendCommand(SEND_ADDR, send_comm,  NEC_RX_IsRepeat());
+   
+       }
+      NEC_RX_CompleteReset(); // сбрасываем вконце, т.к. нужно сначала обработать флаг repeat, а потом сбрасывать
     }
     NEC_TX_Proced();
-//    UART_debug_mess_Handle();
+    UART_debug_mess_Handle();
   }
-  /* USER CODE END 3 */
+
 }
 
 /**

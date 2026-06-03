@@ -87,9 +87,7 @@ uint8_t timeIsOver(uint32_t time_now, uint32_t time_stop);
                                                                  0 bit  for subpriority */
 #endif
 
-/* USER CODE BEGIN Private defines */
 
-/* USER CODE END Private defines */
 
 #ifdef __cplusplus
 }

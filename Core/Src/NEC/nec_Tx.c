@@ -3,18 +3,18 @@
 #include "gpio.h"
 
 #define NEC_TX_PIN              LL_GPIO_PIN_2
-
+#define NEC_TX_PORT             GPIOA
 
 nec_Tx_t NEC_TX;
 
 void NEC_TX_LOW()
 {
-  LL_GPIO_ResetOutputPin(GPIOA, NEC_TX_PIN);
+  LL_GPIO_ResetOutputPin(NEC_TX_PORT, NEC_TX_PIN);
 }
 
 void NEC_TX_HIGH()
 {
-  LL_GPIO_SetOutputPin(GPIOA, NEC_TX_PIN);
+  LL_GPIO_SetOutputPin(NEC_TX_PORT, NEC_TX_PIN);
 }
 
 void NEC_TX_TimerInit(void)
@@ -23,49 +23,21 @@ void NEC_TX_TimerInit(void)
   LL_TIM_OC_InitTypeDef TIM_OC_InitStruct = {0};
 
   LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
-  /* Peripheral clock enable */
   LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM14);
 
   NVIC_SetPriority(TIM14_IRQn, 0);
   NVIC_EnableIRQ(TIM14_IRQn);
 
-  TIM_InitStruct.Prescaler = 48;// 1 тик = 1 мкс
+  TIM_InitStruct.Prescaler = 48;// 1 tick = 1 us
   TIM_InitStruct.CounterMode = LL_TIM_COUNTERMODE_UP;
-  TIM_InitStruct.Autoreload = 40000;// 40мс
+  TIM_InitStruct.Autoreload = 40000;// 40ms
   TIM_InitStruct.ClockDivision = LL_TIM_CLOCKDIVISION_DIV1;
   LL_TIM_Init(TIM14, &TIM_InitStruct);
-//  LL_TIM_EnableARRPreload(TIM14);
-  //___ PWM
-//  LL_TIM_DisableARRPreload(TIM14);
-//  LL_TIM_OC_EnablePreload(TIM14, LL_TIM_CHANNEL_CH1);
-//  TIM_OC_InitStruct.OCMode = LL_TIM_OCMODE_PWM1;
-//  TIM_OC_InitStruct.OCState = LL_TIM_OCSTATE_DISABLE;
-//  TIM_OC_InitStruct.OCNState = LL_TIM_OCSTATE_DISABLE;
-//  TIM_OC_InitStruct.CompareValue = 0;
-//  TIM_OC_InitStruct.OCPolarity = LL_TIM_OCPOLARITY_HIGH;
-//  LL_TIM_OC_Init(TIM14, LL_TIM_CHANNEL_CH1, &TIM_OC_InitStruct);
-//  LL_TIM_OC_DisableFast(TIM14, LL_TIM_CHANNEL_CH1);
-//  LL_TIM_SetOnePulseMode(TIM14, LL_TIM_ONEPULSEMODE_SINGLE);
-  /* USER CODE BEGIN TIM14_Init 2 */
-
-  /* USER CODE END TIM14_Init 2 */
-//  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB);
-//    /**TIM14 GPIO Configuration
-//  PB1     ------> TIM14_CH1    */
-//  GPIO_InitStruct.Pin = LL_GPIO_PIN_1;
-//  GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
-//  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
-//  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-//  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-//  GPIO_InitStruct.Alternate = LL_GPIO_AF_0;
-//  LL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 }
 
 void NEC_TX_OutInit(void)
 {
   LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-  /* GPIO Ports Clock Enable */
   LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
 
   GPIO_InitStruct.Pin = NEC_TX_PIN;
@@ -124,8 +96,8 @@ void NEC_TX_Proced(void)
   
   if(NEC_TX.active && NEC_TX.timer_done)
   {
-
         NEC_TX.timer_done = false;
+        
         switch(NEC_TX.state)
         {
           case NEC_TX_START:
@@ -149,12 +121,12 @@ void NEC_TX_Proced(void)
           case NEC_TX_MARK_BIT:
             
              NEC_TX_LOW();
+
              NEC_TX_TimerStart_us(560); 
              if(NEC_TX.bit_cnt >= 32 || NEC_TX.current.repeat){
                NEC_TX_SetState( NEC_TX_END );
               }
               else{
-               
                NEC_TX_SetState(NEC_TX_BIT);  
               }
            break;
@@ -163,7 +135,9 @@ void NEC_TX_Proced(void)
             {
              uint32_t us = 0;
              bool bit = false;
+
              NEC_TX_HIGH();
+
              if(NEC_TX.bit_cnt < 8){
               bit = 0x01&(NEC_TX.current.address >> NEC_TX.bit_cnt);
              }
@@ -206,9 +180,7 @@ void NEC_TX_Proced(void)
           break;
            default: break;
         }
-
     }
-
 }
 
 void TIM14_IRQHandler(void)

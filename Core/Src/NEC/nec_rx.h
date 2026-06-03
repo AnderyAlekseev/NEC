@@ -48,6 +48,7 @@ bool NEC_RX_IsRepeat(void);
 void NEC_RX_CompleteReset(void);
 void NEC_RX_SetTick(void);
 void NEC_RX_TimerInit(void);
+void NEC_RX_Input_Init(void);
 void NEC_RX_TimerStart(void);
 void NEC_RX_TimerStop(void);
 void NEC_RX_TimerReset(void);

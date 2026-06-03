@@ -38,6 +38,23 @@ void NEC_RX_SetState(nec_fsm_state_e _st)
   }
 }
 
+  
+void  NEC_RX_Set_Trigger(uint8_t Trigger)
+{
+  switch(Trigger)
+  {
+    case LL_EXTI_TRIGGER_RISING:
+      LL_EXTI_DisableFallingTrig_0_31(LL_EXTI_LINE_5);
+      LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_5);
+      break;
+    case LL_EXTI_TRIGGER_FALLING:
+      LL_EXTI_DisableRisingTrig_0_31(LL_EXTI_LINE_5);
+      LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_5);
+      break;
+  }
+}
+
+  
 void NEC_RX_Init(void)
 {
     NEC_RX.state = NEC_IDLE;
@@ -45,7 +62,7 @@ void NEC_RX_Init(void)
     NEC_RX.tim_cnt = 0;
     NEC_RX.indx = 0;
     NEC_RX.done = false;
-    IR_Line_ToggleEXTI_Trigger(LL_EXTI_TRIGGER_FALLING);
+    NEC_RX_Set_Trigger(LL_EXTI_TRIGGER_FALLING);
     NEC_RX_TimerStop();
 }
 
@@ -87,14 +104,14 @@ void NEC_RX_Poll(void)
           case NEC_IDLE:
             {
               NEC_RX.tim_cnt = 0;
-              IR_Line_ToggleEXTI_Trigger(LL_EXTI_TRIGGER_RISING);
+              NEC_RX_Set_Trigger(LL_EXTI_TRIGGER_RISING);
               NEC_RX_SetState(NEC_START);
             }
             break;
             
           case NEC_START:
             {
-              IR_Line_ToggleEXTI_Trigger(LL_EXTI_TRIGGER_FALLING);
+              NEC_RX_Set_Trigger(LL_EXTI_TRIGGER_FALLING);
               arr_tim_cnt[NEC_RX.indx++] = NEC_RX.tim_cnt;
               if(NEC_RX.tim_cnt < RangeNEC.start.max && NEC_RX.tim_cnt >= RangeNEC.start.min  ){
                 NEC_RX_SetState(NEC_SPACE);
@@ -107,7 +124,7 @@ void NEC_RX_Poll(void)
             
           case NEC_SPACE:
             {
-              IR_Line_ToggleEXTI_Trigger(LL_EXTI_TRIGGER_RISING);
+              NEC_RX_Set_Trigger(LL_EXTI_TRIGGER_RISING);
               arr_tim_cnt[NEC_RX.indx++] = NEC_RX.tim_cnt;
               if(NEC_RX.tim_cnt < RangeNEC.space.max && NEC_RX.tim_cnt >= RangeNEC.space.min  ){
                 NEC_RX_SetState(NEC_MARK_BIT);
@@ -124,7 +141,7 @@ void NEC_RX_Poll(void)
             
           case NEC_MARK_BIT:
             {
-              IR_Line_ToggleEXTI_Trigger(LL_EXTI_TRIGGER_FALLING);
+              NEC_RX_Set_Trigger(LL_EXTI_TRIGGER_FALLING);
               arr_tim_cnt[NEC_RX.indx++] = NEC_RX.tim_cnt;
               if(NEC_RX.tim_cnt < RangeNEC.mark_bit.max && NEC_RX.tim_cnt >= RangeNEC.mark_bit.min  )
               {
@@ -144,7 +161,7 @@ void NEC_RX_Poll(void)
               
           case NEC_BIT:
             {
-              IR_Line_ToggleEXTI_Trigger(LL_EXTI_TRIGGER_RISING);
+              NEC_RX_Set_Trigger(LL_EXTI_TRIGGER_RISING);
               
               arr_tim_cnt[NEC_RX.indx++] = NEC_RX.tim_cnt;
               
@@ -231,6 +248,28 @@ void NEC_RX_TimerInit(void)
   TIM_InitStruct.RepetitionCounter = 0;
   LL_TIM_Init(TIM16, &TIM_InitStruct);
   LL_TIM_DisableARRPreload(TIM16);
+}
+
+void NEC_RX_Input_Init(void)
+{
+  LL_EXTI_InitTypeDef EXTI_InitStruct = {0};
+  LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
+  
+  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
+  LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE5);
+
+  LL_GPIO_SetPinPull(GPIOA, LL_GPIO_PIN_5, LL_GPIO_PULL_NO);
+  LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_5, LL_GPIO_MODE_INPUT);
+  /**/
+  EXTI_InitStruct.Line_0_31 = LL_EXTI_LINE_5;
+  EXTI_InitStruct.LineCommand = ENABLE;
+  EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
+  EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_FALLING;//LL_EXTI_TRIGGER_RISING_FALLING;
+  LL_EXTI_Init(&EXTI_InitStruct);
+
+  /* EXTI interrupt init*/
+  NVIC_SetPriority(EXTI4_15_IRQn, 0);
+  NVIC_EnableIRQ(EXTI4_15_IRQn);
 }
 
 

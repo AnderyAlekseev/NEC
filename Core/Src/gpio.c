@@ -80,12 +80,6 @@ void MX_GPIO_Init(void)
   LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /**/
-//  GPIO_InitStruct.Pin = LL_GPIO_PIN_2;
-//  GPIO_InitStruct.Mode = LL_GPIO_MODE_ANALOG;
-//  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-//  LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /**/
   GPIO_InitStruct.Pin = LL_GPIO_PIN_3;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_ANALOG;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
@@ -99,7 +93,7 @@ void MX_GPIO_Init(void)
 
   /**/
   GPIO_InitStruct.Pin = LL_GPIO_PIN_6;
-  GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;//LL_GPIO_MODE_ANALOG;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_ANALOG;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
   LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
@@ -112,43 +106,28 @@ void MX_GPIO_Init(void)
 //  LL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /**/
-  LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE5);
-
-  /**/
-  LL_GPIO_SetPinPull(GPIOA, LL_GPIO_PIN_5, LL_GPIO_PULL_NO);
-
-  /**/
-  LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_5, LL_GPIO_MODE_INPUT);
-
-  /**/
-  EXTI_InitStruct.Line_0_31 = LL_EXTI_LINE_5;
-  EXTI_InitStruct.LineCommand = ENABLE;
-  EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
-  EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_FALLING;//LL_EXTI_TRIGGER_RISING_FALLING;
-  LL_EXTI_Init(&EXTI_InitStruct);
-
-  /* EXTI interrupt init*/
-  NVIC_SetPriority(EXTI4_15_IRQn, 0);
-  NVIC_EnableIRQ(EXTI4_15_IRQn);
+//  LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTA, LL_SYSCFG_EXTI_LINE5);
+//
+//  /**/
+//  LL_GPIO_SetPinPull(GPIOA, LL_GPIO_PIN_5, LL_GPIO_PULL_NO);
+//
+//  /**/
+//  LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_5, LL_GPIO_MODE_INPUT);
+//
+//  /**/
+//  EXTI_InitStruct.Line_0_31 = LL_EXTI_LINE_5;
+//  EXTI_InitStruct.LineCommand = ENABLE;
+//  EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
+//  EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_FALLING;//LL_EXTI_TRIGGER_RISING_FALLING;
+//  LL_EXTI_Init(&EXTI_InitStruct);
+//
+//  /* EXTI interrupt init*/
+//  NVIC_SetPriority(EXTI4_15_IRQn, 0);
+//  NVIC_EnableIRQ(EXTI4_15_IRQn);
 
 }
 
 
-void IR_Line_ToggleEXTI_Trigger(uint8_t Trigger)
-{
-
-  switch(Trigger)
-  {
-    case LL_EXTI_TRIGGER_RISING:
-      LL_EXTI_DisableFallingTrig_0_31(LL_EXTI_LINE_5);
-      LL_EXTI_EnableRisingTrig_0_31(LL_EXTI_LINE_5);
-      break;
-    case LL_EXTI_TRIGGER_FALLING:
-      LL_EXTI_DisableRisingTrig_0_31(LL_EXTI_LINE_5);
-      LL_EXTI_EnableFallingTrig_0_31(LL_EXTI_LINE_5);
-      break;
-  }
-}
 /* USER CODE BEGIN 2 */
 uint32_t GetRxPinState()
 {
