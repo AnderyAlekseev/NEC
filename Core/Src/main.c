@@ -26,7 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 #include "stm32f0xx_it.h"
 #include <stdio.h>
-
+#define LOG_UART       0
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 
@@ -88,32 +88,39 @@ int main(void)
   SystemClock_Config();
   SysTick_Config(32000);
   MX_GPIO_Init();
-  MX_USART1_UART_Init();
+ 
   NEC_RX_Input_Init();
   NEC_RX_TimerInit();
   NEC_TX_OutInit();
   NEC_TX_TimerInit();
+  
+#if (LOG_UART)
+  MX_USART1_UART_Init();
+#endif
 
-//   test_coom();
   while (1)
   {
     
     if( NEC_RX_IsComplete() )
     {
-       UART_Printf("Address %d %sCommand %d\r\n", NEC_RX_Get_Address(), NEC_RX_IsRepeat()?"Repeat ":"", NEC_RX_Get_Command());
-      //__ starting the transmitter
-       if(NEC_RX_Get_Address() == REC_ADDR)
-       {// if it is addressed to this device
-        uint8_t send_comm = get_send_comm(NEC_RX_Get_Command());
-        NEC_TX_SendCommand(SEND_ADDR, send_comm,  NEC_RX_IsRepeat());
+        #if (LOG_UART)
+        UART_Printf("Address %d %sCommand %d\r\n", NEC_RX_Get_Address(), NEC_RX_IsRepeat()?"Repeat ":"", NEC_RX_Get_Command());
+        #endif
+  
+        //__ starting the transmitter
+        if(NEC_RX_Get_Address() == REC_ADDR)
+        {// if it is addressed to this device
+          uint8_t send_comm = get_send_comm(NEC_RX_Get_Command());
+          NEC_TX_SendCommand(SEND_ADDR, send_comm,  NEC_RX_IsRepeat());
    
-       }
-      NEC_RX_CompleteReset(); // сбрасываем вконце, т.к. нужно сначала обработать флаг repeat, а потом сбрасывать
+        }
+        NEC_RX_CompleteReset(); // сбрасываем вконце, т.к. нужно сначала обработать флаг repeat, а потом сбрасывать
     }
     NEC_TX_Proced();
+    #if (LOG_UART)
     UART_debug_mess_Handle();
+    #endif
   }
-
 }
 
 /**
